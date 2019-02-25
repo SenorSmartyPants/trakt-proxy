@@ -23,6 +23,7 @@ $imdb_id = array_key_exists('imdb_id', $_GET) ? $_GET['imdb_id'] : null;
 $tvdb_id = array_key_exists('tvdb_id', $_GET) ? $_GET['tvdb_id'] : null;
 $season = array_key_exists('season', $_GET) ? $_GET['season'] : null;
 $episode = array_key_exists('episode', $_GET) ? $_GET['episode'] : null;
+$episode_id = array_key_exists('episode_id', $_GET) ? $_GET['episode_id'] : null;
 
 
 if (isset($_GET["cancel"])) {
@@ -66,20 +67,23 @@ if (isset($_GET["cancel"])) {
           var_dump($watching["episode"]["season"]);
           var_dump(intval($episode));
           var_dump($watching["episode"]["number"]); 
+          var_dump(intval($episode_id));
+          var_dump($watching["episode"]["ids"]["tvdb"]); 
         }
         //is it the same?
         //will have to update check when movies are added, because they will probably return tvdb ids and imdb for shows
         if (
-            (intval($tvdb_id) > 0 && $watching["movie"] != null) ||
-            (intval($tvdb_id) > 0 &&
+            ((intval($tvdb_id) > 0 || intval($episode_id) > 0) && $watching["movie"] != null) || //watching a movie, but check into a show
+            (intval($tvdb_id) > 0 && intval($episode_id) == 0 && // check into a show and ... 
               (
-                intval($tvdb_id) != $watching["show"]["ids"]["tvdb"] || 
-                intval($season) != $watching["episode"]["season"] ||
-                intval($episode) != $watching["episode"]["number"]
+                intval($tvdb_id) != $watching["show"]["ids"]["tvdb"] || //different series
+                intval($season) != $watching["episode"]["season"] || //different seasons
+                intval($episode) != $watching["episode"]["number"] //different episode numbers
               )
             ) ||
-            (strlen($imdb_id) > 0 && $watching["show"] != null) ||
-            (strlen($imdb_id) > 0 && $imdb_id != $watching["movie"]["ids"]["imdb"])
+            (intval($episode_id) > 0 && (intval($episode_id) != $watching["episode"]["ids"]["tvdb"])) || //watching a movie, but check into a show(with epi id)
+            (strlen($imdb_id) > 0 && $watching["show"] != null) || // watching a show, but check into a movie
+            (strlen($imdb_id) > 0 && $imdb_id != $watching["movie"]["ids"]["imdb"]) // different movies
         ) {
           //different
           if ($autocancel) {
@@ -129,13 +133,28 @@ function checkin()
     $year, 
     $season, 
     $episode, 
+    $episode_id,
     $duration;
 
-  if ($tvdb_id > 0) {
-    $watching = array(
-          "show" => array("title" => "$title", "year" => $year, "ids" => array("tvdb" => "$tvdb_id")), 
-          "episode" => array("season" => "$season", "number" => "$episode")
-        );
+  if ($tvdb_id > 0 || $episode_id > 0) {
+    $arrshow;
+    $arrEpisode = array();
+    //add elements if not null
+    
+    //always use episode id if provided, and nothing else
+    if ($episode_id) {
+      $arrEpisode["ids"] = array("tvdb" => "$episode_id");
+    } else {
+      $arrshow = array("title" => "$title", "year" => $year, "ids" => array("tvdb" => "$tvdb_id"));
+      
+      $arrEpisode["season"] = "$season";
+      $arrEpisode["number"] = "$episode";
+    }
+
+    $watching = array();
+    if ($arrshow) $watching["show"] = $arrshow;
+    $watching["episode"] = $arrEpisode;
+
   } else {
     $watching = array(
           "movie" => array("title" => "$title", "year" => $year, "ids" => array("imdb" => "$imdb_id")) 
