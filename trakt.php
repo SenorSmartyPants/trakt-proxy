@@ -556,14 +556,14 @@ class Trakt
         }
 
         // get auth token from file, if there isn't one, then login
-        $authToken = file_get_contents("tokens/trakt-user-token");
+        $authToken = file_get_contents("tokens/" . $username . "/trakt-user-token");
         if (!$authToken) {
             // or if call with auth token fails login 
             $authResult = $this->authLogin(array("login" => "$username", 
               "password" => "$password"));
             $authToken = $authResult["token"];
 
-            file_put_contents("tokens/trakt-user-token",$authToken);
+            file_put_contents("tokens/" . $username . "/trakt-user-token",$authToken);
         }
 
         $this->userToken = $authToken;
@@ -572,10 +572,12 @@ class Trakt
     public function setAuthPIN($pin, $client_id, $client_secret, $redirect_uri)
     {
         // get auth token from file, if there isn't one, then login
-        $authToken = file_get_contents("tokens/trakt-user-token");
-        $refreshToken = file_get_contents("tokens/trakt-refresh-token");
+        $authToken = file_get_contents("tokens/" . $this->username . "/trakt-user-token");
+        $refreshToken = file_get_contents("tokens/" . $this->username . "/trakt-refresh-token");
 
         if ($this->debug) {
+            echo "\nusername = ";
+            var_dump($this->username);
             echo "authToken = ";
             var_dump($authToken);
             echo "\nrefreshToken = ";
@@ -592,8 +594,8 @@ class Trakt
   
             $authToken = array_key_exists('access_token', $authResult) ? $authResult['access_token'] : null;
             $refreshToken = array_key_exists('refresh_token', $authResult) ? $authResult['refresh_token'] : null;
-            file_put_contents("tokens/trakt-user-token",$authToken);
-            file_put_contents("tokens/trakt-refresh-token",$refreshToken);
+            file_put_contents("tokens/" . $this->username . "/trakt-user-token",$authToken);
+            file_put_contents("tokens/" . $this->username . "/trakt-refresh-token",$refreshToken);
         }
 
         $this->userToken = $authToken;
@@ -603,7 +605,7 @@ class Trakt
 
     public function refreshToken($client_id, $client_secret, $redirect_uri)
     {
-        $refreshToken = file_get_contents("tokens/trakt-refresh-token");
+        $refreshToken = file_get_contents("tokens/" . $this->username . "/trakt-refresh-token");
 
         if ($this->debug) {
             echo "\nrefreshToken = ";
@@ -621,8 +623,8 @@ class Trakt
 
         $authToken = array_key_exists('access_token', $authResult) ? $authResult['access_token'] : null;
         $refreshToken = array_key_exists('refresh_token', $authResult) ? $authResult['refresh_token'] : null;
-        file_put_contents("tokens/trakt-user-token",$authToken);
-        file_put_contents("tokens/trakt-refresh-token",$refreshToken);
+        file_put_contents("tokens/" . $this->username . "/trakt-user-token",$authToken);
+        file_put_contents("tokens/" . $this->username . "/trakt-refresh-token",$refreshToken);
 
         $this->userToken = $authToken;
     }   

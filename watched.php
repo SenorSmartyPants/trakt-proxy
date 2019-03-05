@@ -6,7 +6,7 @@ $trakt = new Trakt($TRAKT_API_KEY,true);
 $trakt->setAuth($username, $password);
 echo "auth http status $trakt->httpStatus\n";
 
-$response = $trakt->users("senorsmartypants","watched/shows?page=1&limit=10&extended=min");
+$response = $trakt->users($username,"watched/shows?page=1&limit=10&extended=min");
 echo "http status code = $trakt->httpStatus\n";
 var_dump($response);
 
