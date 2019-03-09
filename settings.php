@@ -1,5 +1,5 @@
 <?php 
-include 'pin.php';
+$pin = trim(file_get_contents("tokens/pin")); 
 $username = trim(file_get_contents("tokens/currentuser")); 
 
 //"Popcornhour" v2 API key!
