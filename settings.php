@@ -1,6 +1,6 @@
 <?php 
 include 'pin.php';
-include 'currentuser.php';
+$username = trim(file_get_contents("tokens/currentuser")); 
 
 //"Popcornhour" v2 API key!
 $TRAKT_API_KEY = "4af27c888f0ab8f3de79fd2e7f5149eac6fadb9b4736b1292f4cd1f0cdfb4ba1";
