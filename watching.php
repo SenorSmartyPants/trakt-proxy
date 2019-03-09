@@ -3,7 +3,8 @@ include 'settings.php';
 include 'trakt.php';
 
 $trakt = new Trakt($TRAKT_API_KEY,true);
-$trakt->setAuth($username, $password);
+$trakt->username = $username;
+$trakt->setAuthPIN($pin,$client_id,$client_secret, $redirect_uri);
 echo "auth http status $trakt->httpStatus\n";
 
 $response = $trakt->users($username,"watching");
