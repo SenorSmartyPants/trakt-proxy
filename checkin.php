@@ -11,7 +11,6 @@ $time_start = microtime(true);
 
 $debug = isset($_GET["debug"]);
 $trakt = new Trakt($TRAKT_API_KEY,$debug);
-#$trakt->setAuth($username, $password);
 $trakt->username = $username;
 $trakt->setAuthPIN($pin,$client_id,$client_secret, $redirect_uri);
 
