@@ -2,9 +2,7 @@
 $pin = trim(file_get_contents("tokens/pin")); 
 $username = trim(file_get_contents("tokens/currentuser")); 
 
-//"Popcornhour" v2 API key!
-$TRAKT_API_KEY = "4af27c888f0ab8f3de79fd2e7f5149eac6fadb9b4736b1292f4cd1f0cdfb4ba1";
-
+//"Popcornhour" v2 API key! is the same as client_id
 $client_id = "4af27c888f0ab8f3de79fd2e7f5149eac6fadb9b4736b1292f4cd1f0cdfb4ba1";
 $client_secret = "db7b3486de1b4c89f7583374086dc6458f8210bc8844e477b3383aa7544fa46d";
 $redirect_uri = "urn:ietf:wg:oauth:2.0:oob";

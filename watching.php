@@ -2,7 +2,7 @@
 include 'settings.php';
 include 'trakt.php';
 
-$trakt = new Trakt($TRAKT_API_KEY,true);
+$trakt = new Trakt($client_id,true);
 $trakt->username = $username;
 $trakt->setAuthPIN($pin,$client_id,$client_secret, $redirect_uri);
 echo "auth http status $trakt->httpStatus\n";

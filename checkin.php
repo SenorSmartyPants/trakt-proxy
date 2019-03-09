@@ -10,7 +10,7 @@ set_time_limit(0);
 $time_start = microtime(true);
 
 $debug = isset($_GET["debug"]);
-$trakt = new Trakt($TRAKT_API_KEY,$debug);
+$trakt = new Trakt($client_id,$debug);
 $trakt->username = $username;
 $trakt->setAuthPIN($pin,$client_id,$client_secret, $redirect_uri);
 
