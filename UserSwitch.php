@@ -10,14 +10,14 @@ if (isset($_GET["auth_pin"])) {
 }
 ?>
 
-Click on name to set user currently watching.<p/>
+<p>Click on name to set user currently watching.</p>
 
-<a href="http://nanners:8123/setuser.php?user=senorsmartypants">SenorSmartyPants</a>
-<br/>
-<a href="http://nanners:8123/setuser.php?user=heidilynne">HeidiLynne</a>
+<p><a href="http://nanners:8123/setuser.php?user=senorsmartypants">SenorSmartyPants</a></p>
 
-<p/>
+<p><a href="http://nanners:8123/setuser.php?user=heidilynne">HeidiLynne</a></p>
+
+<p>
 If not signed in using popcorn hour, or check-ins not working...
-<a href="<?= $pin_url ?>">Authorize on Trakt</a><p/>
+<a href="<?= $pin_url ?>">Authorize on Trakt</a></p>
 
 Then paste that PIN in here <form><input name="auth_pin"><input type=submit></form>
