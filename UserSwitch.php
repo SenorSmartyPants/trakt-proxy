@@ -10,11 +10,15 @@ if (isset($_GET["auth_pin"])) {
 }
 ?>
 
+<p>User is currently set to <b><?= $username ?></b>.</p>
+
 <p>Click on name to set user currently watching.</p>
 
-<p><a href="http://nanners:8123/setuser.php?user=senorsmartypants">SenorSmartyPants</a></p>
+<p><a href="http://rockpi:8123/trakt-proxy/setuser.php?user=senorsmartypants">SenorSmartyPants</a></p>
 
-<p><a href="http://nanners:8123/setuser.php?user=heidilynne">HeidiLynne</a></p>
+<p><a href="http://rockpi:8123/trakt-proxy/setuser.php?user=heidilynne">HeidiLynne</a></p>
+
+<p><a href="http://rockpi:8123/trakt-proxy/setuser.php?user=senorsmartypants,heidilynne">Both!</a></p>
 
 <p>
 If not signed in using popcorn hour, or check-ins not working...
