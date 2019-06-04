@@ -571,6 +571,14 @@ class Trakt
  
     public function setAuthPIN($pin, $client_id, $client_secret, $redirect_uri)
     {
+        // if token files are 60 days or older, refresh token first
+        // refresh tokens before they expire
+        $tokentimestamp = filemtime("tokens/" . $this->username . "/trakt-user-token");
+        if ( ((time() - $tokentimestamp) / 86400) >= 60) {
+            //refresh token
+            $this->refreshToken($client_id, $client_secret, $redirect_uri);
+        }
+
         // get auth token from file, if there isn't one, then login
         $authToken = file_get_contents("tokens/" . $this->username . "/trakt-user-token");
         $refreshToken = file_get_contents("tokens/" . $this->username . "/trakt-refresh-token");
@@ -611,15 +619,14 @@ class Trakt
             echo "\nrefreshToken = ";
             var_dump($refreshToken);
         }
-        if ($authResult["error"] == "invalid_grant") {
-          // try to refresh token
-          $authResult = $this->oauthToken(array("refresh_token" => "$refreshToken", 
-            "client_id" => "$client_id",
-            "client_secret" => "$client_secret",
-            "redirect_uri" => "$redirect_uri",
-            "grant_type" => "refresh_token")
-          );
-        }
+
+        // try to refresh token
+        $authResult = $this->oauthToken(array("refresh_token" => "$refreshToken", 
+        "client_id" => "$client_id",
+        "client_secret" => "$client_secret",
+        "redirect_uri" => "$redirect_uri",
+        "grant_type" => "refresh_token")
+        );
 
         $authToken = array_key_exists('access_token', $authResult) ? $authResult['access_token'] : null;
         $refreshToken = array_key_exists('refresh_token', $authResult) ? $authResult['refresh_token'] : null;
