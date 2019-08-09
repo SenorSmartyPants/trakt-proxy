@@ -43,7 +43,11 @@ if ($debug) echo "Checkin took $time seconds\n";
 
 function handleRequest($username)
 {
-  global $trakt,$blacklist,$debug;
+  global $trakt, $debug;
+
+  //blacklist required variables
+  global $blacklist, $tvdb_id, $imdb_id, $title;
+
   global $pin,$client_id,$client_secret, $redirect_uri;
   $trakt->username = $username;
   $trakt->setAuthPIN($pin,$client_id,$client_secret, $redirect_uri);
